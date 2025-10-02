@@ -14,7 +14,7 @@ function MobileSidebarComp({ openSidebar, setOpenSidebar }: { openSidebar: boole
 
   const handleSetOpen = useCallback(
     (value: boolean) => {
-      setOpenUploader(value);
+      setOpenSidebar(value);
     },
     [setOpenUploader]
   );
