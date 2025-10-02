@@ -1,10 +1,13 @@
 import { queryOptions } from "@tanstack/react-query";
 
+const baseUrl = "https://my-musics-one.vercel.app/api";
+
 export const musicsOption = (token: string) => {
   return queryOptions({
     queryKey: ["musics"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:3000/api/music", {
+      // const response = await fetch("http://localhost:3000/api/music", {
+      const response = await fetch(`${baseUrl}/music`, {
         headers: {
           Authorization: token,
         },
@@ -19,7 +22,7 @@ export const favoritesMusicsOption = (token: string) => {
   return queryOptions({
     queryKey: ["favorites"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:3000/api/music/favorites", {
+      const response = await fetch(`${baseUrl}/music/favorites`, {
         headers: {
           Authorization: token,
         },
@@ -34,7 +37,7 @@ export const folderOption = (token: string) => {
   return queryOptions({
     queryKey: ["folders"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:3000/api/folder", {
+      const response = await fetch(`${baseUrl}/folder`, {
         headers: {
           Authorization: token,
         },
@@ -49,7 +52,8 @@ export const folderMusicOption = (token: string, folderId: string) => {
   return queryOptions({
     queryKey: ["folder", folderId],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:3000/api/folder/${folderId}/musics`, {
+      // const response = await fetch(`http://localhost:3000/api/folder/${folderId}/musics`, {
+      const response = await fetch(`${baseUrl}/folder/${folderId}/musics`, {
         headers: {
           Authorization: token,
         },
