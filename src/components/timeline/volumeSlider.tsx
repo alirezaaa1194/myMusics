@@ -1,6 +1,6 @@
 import { Button } from "../ui/button";
 import GlobalContext from "@/contexts/globalContent";
-import { use, useEffect, useState } from "react";
+import { use, useState } from "react";
 import { setOption } from "@/actions/options";
 import { Slider } from "../ui/slider";
 
@@ -9,30 +9,8 @@ function VolumeSliderComp() {
   const [volume, setVolume] = useState(Number(globalContext?.options.volume));
   const [prevVolume, setPrevVolume] = useState(globalContext?.audio.current?.volume || 0.5);
 
-  useEffect(() => {
-    const muteHandler = (e: KeyboardEvent) => {
-      if (e.key === "m") {
-        if (globalContext?.audio.current) {
-          if (globalContext.audio.current.volume > 0) {
-            setVolume(0);
-            globalContext.audio.current.volume = 0;
-          } else {
-            setVolume(50);
-            globalContext.audio.current.volume = 0.5;
-          }
-        }
-      }
-    };
-
-    window.addEventListener("keyup", muteHandler);
-
-    return () => {
-      window.removeEventListener("keyup", muteHandler);
-    };
-  }, [globalContext?.audio]);
-
   return (
-    <div className="w-2/12 shrink-0 flex items-center gap-2">
+    <div className="flex-1 shrink-0 flex items-center gap-2">
       <Button
         className="w-10 h-10 cursor-pointer !bg-transparent !size-6"
         onClick={() => {

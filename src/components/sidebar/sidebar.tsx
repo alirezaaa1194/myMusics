@@ -16,7 +16,7 @@ function SidebarComp() {
       <UploaderComp open={openMusicModal} onClose={() => setOpenMusicModal(false)} />
       <div className="w-full h-full flex flex-col justify-between">
         <div className="flex flex-col">
-          <h1 className="text-lg h-[62px]">Next.js</h1>
+          <h1 className="text-lg h-[62px]"></h1>
           <ul>
             <li>
               <Link href="/" className={`w-full flex items-center gap-3 text-white  px-4 py-2.5 border border-transparent hover:text-accent transition-colors rounded-l-lg ${pathname === "/" ? "bg-surface border border-border" : ""}`}>

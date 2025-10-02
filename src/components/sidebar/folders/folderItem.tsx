@@ -4,17 +4,19 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import React, { use, useRef, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { folderFormSchema } from "@/utils/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import GlobalContext from "@/contexts/globalContent";
 import { toast } from "sonner";
 import SpinnerComp from "@/components/spinner/spinner";
 import { Button } from "@/components/ui/button";
+import { folderOption } from "@/utils/options";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function FolderItemComp({ folder }: { folder: PrismaType.Folder }) {
   const globalContext = use(GlobalContext);
@@ -24,6 +26,7 @@ function FolderItemComp({ folder }: { folder: PrismaType.Folder }) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const queryClient = useQueryClient();
+  const { data } = useQuery(folderOption(String(globalContext?.token)));
   const form = useForm<z.infer<typeof folderFormSchema>>({
     resolver: zodResolver(folderFormSchema),
     defaultValues: {
@@ -75,13 +78,38 @@ function FolderItemComp({ folder }: { folder: PrismaType.Folder }) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof folderFormSchema>) {
+  async function onSubmit(values: z.infer<typeof folderFormSchema>) {
+    if (values.title !== folder.title) {
+      const isExistFolder = data.folders.some((folder: PrismaType.Folder) => folder.title.trim() === values.title.trim());
+
+      if (isExistFolder) {
+        form.setError("title", {
+          message: "Folder name already exists",
+        });
+        return;
+      }
+
+      const isValid = await form.trigger();
+      if (!isValid) return;
+    }
+
     if (values.title !== folder.title) {
       editMutation.mutate(values);
     }
     inputRef.current = null;
     setIsEdit(false);
   }
+
+  useEffect(() => {
+    const skipHandler = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isEdit) {
+        inputRef.current = null;
+        setIsEdit(false);
+      }
+    };
+    window.addEventListener("keydown", skipHandler);
+    return () => window.removeEventListener("keydown", skipHandler);
+  }, [isEdit]);
 
   return (
     <>
@@ -107,7 +135,7 @@ function FolderItemComp({ folder }: { folder: PrismaType.Folder }) {
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 shrink-0">
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
             </svg>
-            {editMutation.isPending ? "loading..." : folder.title}
+            {editMutation.isPending ? <Skeleton className="h-6 w-full rounded-lg bg-surface" /> : <span className="line-clamp-1">{folder.title}</span>}
           </Link>
         ) : (
           <div className={`w-full flex items-center gap-3 transition-colors hover:text-accent ${params?.slug === folder.id ? "text-accent" : ""}`}>
@@ -130,6 +158,19 @@ function FolderItemComp({ folder }: { folder: PrismaType.Folder }) {
                                 field.ref(el);
                                 inputRef.current = el;
                               }}
+                              onChange={(e) => {
+                                form.setValue("title", e.target.value);
+                                if (e.target.value !== folder.title) {
+                                  const isExistFolder = data.folders.some((folder: PrismaType.Folder) => folder.title.trim() === e.target.value.trim());
+                                  if (isExistFolder) {
+                                    form.setError("title", {
+                                      message: "Folder name already exists",
+                                    });
+                                  } else {
+                                    form.clearErrors();
+                                  }
+                                }
+                              }}
                               id="title"
                               name="title"
                               placeholder="Folder name"
@@ -147,7 +188,7 @@ function FolderItemComp({ folder }: { folder: PrismaType.Folder }) {
                 </form>
               </Form>
             ) : (
-              folder.title
+              <span className="line-clamp-1">{folder.title}</span>
             )}
           </div>
         )}
@@ -175,8 +216,8 @@ function FolderItemComp({ folder }: { folder: PrismaType.Folder }) {
               Edit name
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer hover:!bg-red-500 !text-white" onClick={() => setOpenDialog(true)}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="size-4">
-                <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clipRule="evenodd" />
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="white" className="size-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
               </svg>
               Delete
             </DropdownMenuItem>

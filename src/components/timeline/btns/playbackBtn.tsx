@@ -19,20 +19,6 @@ const PlaybackBtnComp = ({ className }: { className?: string }) => {
     const handleEnded = () => {
       sortHandler(playlist.musics);
 
-      // if (globalContext?.options?.filter === "name") {
-      //   if (globalContext?.options?.sort === "Ascending") {
-      //     playlist.musics.sort((a: PrismaType.Music, b: PrismaType.Music) => a.title.localeCompare(b.title));
-      //   } else if (globalContext?.options?.sort === "Descending") {
-      //     playlist.musics.sort((a: PrismaType.Music, b: PrismaType.Music) => b.title.localeCompare(a.title));
-      //   }
-      // } else if (globalContext?.options?.filter === "dateAdded") {
-      //   if (globalContext?.options?.sort === "Ascending") {
-      //     playlist.musics.sort((a: PrismaType.Music, b: PrismaType.Music) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-      //   } else if (globalContext?.options?.sort === "Descending") {
-      //     playlist.musics.sort((a: PrismaType.Music, b: PrismaType.Music) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-      //   }
-      // }
-
       switch (globalContext?.options?.playbackMode) {
         case "next": {
           const currentMusicIndex = playlist.musics.findIndex((music: PrismaType.Music) => music.id === currentMusicId);
@@ -83,19 +69,6 @@ const PlaybackBtnComp = ({ className }: { className?: string }) => {
       const allMusics = playlist.musics;
       sortHandler(allMusics);
 
-      // if (globalContext?.options?.filter === "name") {
-      //   if (globalContext?.options?.sort === "Ascending") {
-      //     allMusics.sort((a: PrismaType.Music, b: PrismaType.Music) => a.title.localeCompare(b.title));
-      //   } else if (globalContext?.options?.sort === "Descending") {
-      //     allMusics.sort((a: PrismaType.Music, b: PrismaType.Music) => b.title.localeCompare(a.title));
-      //   }
-      // } else if (globalContext?.options?.filter === "dateAdded") {
-      //   if (globalContext?.options?.sort === "Ascending") {
-      //     allMusics.sort((a: PrismaType.Music, b: PrismaType.Music) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-      //   } else if (globalContext?.options?.sort === "Descending") {
-      //     allMusics.sort((a: PrismaType.Music, b: PrismaType.Music) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-      //   }
-      // }
       const currentMusicIndex = allMusics.findIndex((music: PrismaType.Music) => music.id === currentMusicId);
       const newMusicIndex = currentMusicIndex === allMusics.length - 1 ? 0 : currentMusicIndex + 1;
       globalContext?.audio.current?.setAttribute("src", allMusics[newMusicIndex].src);
@@ -112,7 +85,6 @@ const PlaybackBtnComp = ({ className }: { className?: string }) => {
       audioElem.removeEventListener("ended", handleEnded);
       audioElem.removeEventListener("error", handleError);
     };
-    // }, [audioElem, playlist, currentMusicId, globalContext?.options?.playbackMode, globalContext?.options?.filter, globalContext?.options?.sort]);
   }, [audio, playlist, currentMusicId, options?.playbackMode, options?.filter, options?.sort, setPlay, setOptions, sortHandler]);
 
   const playbackHandler = () => {

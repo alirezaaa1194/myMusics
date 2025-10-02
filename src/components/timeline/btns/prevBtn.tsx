@@ -27,7 +27,7 @@ function PrevBtnComp({ className }: { className?: string }) {
     //     allMusics.sort((a: PrismaType.Music, b: PrismaType.Music) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     //   }
     // }
-    const currentMusicIndex = allMusics.findIndex((music: PrismaType.Music) => music.id === currentMusic.id);
+    const currentMusicIndex = allMusics.findIndex((music: PrismaType.Music) => music.id === currentMusic?.data?.id);
     const newMusicIndex = currentMusicIndex === 0 ? allMusics.length - 1 : currentMusicIndex - 1;
     globalContext?.audio.current?.setAttribute("src", allMusics[newMusicIndex].src);
     globalContext?.audio.current?.play();

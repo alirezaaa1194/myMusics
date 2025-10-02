@@ -1,9 +1,7 @@
-import React from 'react'
+import SkeletonListComp from "@/components/musics/skeletonList";
 
 function loading() {
-  return (
-    <div>loadingComp2</div>
-  )
+  return <SkeletonListComp />;
 }
 
-export default loading
+export default loading;

@@ -10,6 +10,7 @@ import Link from "next/link";
 import { signup } from "@/actions/auth";
 import { startTransition, useActionState, useEffect } from "react";
 import { toast } from "sonner";
+import SpinnerComp from "../spinner/spinner";
 
 function SignupComp() {
   const form = useForm<z.infer<typeof signupFormSchema>>({
@@ -43,7 +44,7 @@ function SignupComp() {
   }, [state]);
 
   return (
-    <div className="w-full lg:max-w-[350px] mt-24 border border-secondary2/80 rounded-xl p-4 space-y-5">
+    <div className="w-full lg:max-w-[350px] mt-24 border border-border rounded-xl p-4 space-y-5">
       <h1 className="text-center text-2xl font-bold mb-2">Signup</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} id="login-form" className="space-y-5">
@@ -86,8 +87,8 @@ function SignupComp() {
               </FormItem>
             )}
           />
-          <Button type="submit" form="login-form" className="w-full bg-accent hover:bg-accent/80 text-main font-bold text-sm transition-colors cursor-pointer">
-            {pending ? "loading..." : "Signup"}
+          <Button type="submit" form="login-form" className="w-full bg-accent hover:bg-accent/80 text-main text-[17px] transition-colors cursor-pointer">
+            {pending ? <SpinnerComp className="size-6" variant="dark" /> : "Signup"}
           </Button>
         </form>
       </Form>

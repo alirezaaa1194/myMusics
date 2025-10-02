@@ -3,8 +3,9 @@ import { cookies } from "next/headers";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { folderMusicOption } from "@/utils/options";
 import { getQueryClient } from "@/utils/getQueryClient";
+import SkeletonListComp from "@/components/musics/skeletonList";
 const FolderMusicsComp = dynamic(() => import("@/components/musics/folderMusics"), {
-  loading: () => <p>Loading2...</p>,
+  loading: () => <SkeletonListComp/>,
 });
 
 async function page(props: { params: Promise<{ slug: string }> }) {

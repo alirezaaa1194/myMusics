@@ -1,12 +1,12 @@
 import { queryOptions } from "@tanstack/react-query";
 
-const baseUrl = "https://my-musics-one.vercel.app/api";
+// const baseUrl = "https://my-musics-one.vercel.app/api";
+const baseUrl = "http://localhost:3000/api";
 
 export const musicsOption = (token: string) => {
   return queryOptions({
     queryKey: ["musics"],
     queryFn: async () => {
-      // const response = await fetch("http://localhost:3000/api/music", {
       const response = await fetch(`${baseUrl}/music`, {
         headers: {
           Authorization: token,
@@ -52,7 +52,6 @@ export const folderMusicOption = (token: string, folderId: string) => {
   return queryOptions({
     queryKey: ["folder", folderId],
     queryFn: async () => {
-      // const response = await fetch(`http://localhost:3000/api/folder/${folderId}/musics`, {
       const response = await fetch(`${baseUrl}/folder/${folderId}/musics`, {
         headers: {
           Authorization: token,

@@ -4,6 +4,7 @@ import { folderOption } from "@/utils/options";
 import { useQuery } from "@tanstack/react-query";
 import { use } from "react";
 import FolderItemComp from "./folderItem";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function FoldersComp() {
   const globalContext = use(GlobalContext);
@@ -12,7 +13,12 @@ function FoldersComp() {
   return (
     <div className="no-scrollbar lg:my-2 pt-2 lg:py-2 border-y border-y-border w-full h-full max-h-full overflow-auto">
       {isPending ? (
-        "loading..."
+        <ul className="flex flex-col gap-2 pr-2">
+          <Skeleton className="h-[44px] w-full rounded-lg bg-surface" />
+          <Skeleton className="h-[44px] w-full rounded-lg bg-surface" />
+          <Skeleton className="h-[44px] w-full rounded-lg bg-surface" />
+          <Skeleton className="h-[44px] w-full rounded-lg bg-surface" />
+        </ul>
       ) : (
         <ul className="flex flex-col gap-1 pr-2">
           {data?.folders

@@ -3,8 +3,9 @@ import { cookies } from "next/headers";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { musicsOption } from "@/utils/options";
 import { getQueryClient } from "@/utils/getQueryClient";
+import SkeletonListComp from "@/components/musics/skeletonList";
 const Musics = dynamic(() => import("@/components/musics/musics"), {
-  loading: () => <p>Loading2...</p>,
+  loading: () => <SkeletonListComp />,
 });
 
 async function page() {

@@ -28,9 +28,9 @@ function NextBtnComp({ className }: { className?: string }) {
     //     allMusics.sort((a: PrismaType.Music, b: PrismaType.Music) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     //   }
     // }
-    const currentMusicIndex = allMusics.findIndex((music: PrismaType.Music) => music.id === currentMusic.id);
+    const currentMusicIndex = allMusics.findIndex((music: PrismaType.Music) => music.id === currentMusic?.data?.id);
     if (globalContext?.options.playbackMode === "shuffle") {
-      const newMusic: PrismaType.Music = allMusics.filter((music: PrismaType.Music) => music.id !== currentMusic?.id).sort(() => 0.5 - Math.random())[0];
+      const newMusic: PrismaType.Music = allMusics.filter((music: PrismaType.Music) => music.id !== currentMusic?.data?.id).sort(() => 0.5 - Math.random())[0];
       globalContext.setOptions({ ...globalContext.options, currentMusicId: newMusic.id });
       globalContext.setPlay(true);
       setOption({ ...globalContext.options, currentMusicId: newMusic.id });

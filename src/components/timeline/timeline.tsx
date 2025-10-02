@@ -12,7 +12,7 @@ function TimelineComp() {
   useEffect(() => {
     if (currentMusic && globalContext?.audio.current) {
       if (!globalContext?.audio.current.src) {
-        globalContext.audio.current.src = currentMusic.src;
+        globalContext.audio.current.src = currentMusic?.data?.src;
       }
     }
 

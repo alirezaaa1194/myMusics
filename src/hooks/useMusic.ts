@@ -4,7 +4,7 @@ import GlobalContext from "@/contexts/globalContent";
 import { PrismaType } from "@/lib/prisma";
 import { uploadFormSchema } from "@/utils/formSchema";
 import { favoritesMusicsOption, musicsOption } from "@/utils/options";
-import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { use } from "react";
 import { toast } from "sonner";
@@ -20,12 +20,18 @@ export function useGetFavoritesMusics() {
   return useQuery(favoritesMusicsOption(String(globalContext?.token)));
 }
 
-export function useCurrentMusic(): PrismaType.Music {
+export function useCurrentMusic(): {
+  data: PrismaType.Music;
+  isPending: boolean;
+} {
   const globalContext = use(GlobalContext);
-  const musics = useSuspenseQuery(musicsOption(String(globalContext?.token)));
+  const musics = useQuery(musicsOption(String(globalContext?.token)));
   const currentMusic = musics.data?.musics?.find((music: PrismaType.Music) => music.id === globalContext?.options.currentMusicId);
 
-  return currentMusic;
+  return {
+    data: currentMusic,
+    isPending: musics.isPending,
+  };
 }
 
 export function useLike(id: string) {
@@ -121,11 +127,11 @@ export function useDelete(id: string) {
         };
       });
 
-      if (currentMusic.id === id) {
+      if (currentMusic.data.id === id) {
         const allMusics = musics.data.musics;
-        const currentMusicIndex = allMusics.findIndex((music: PrismaType.Music) => music.id === currentMusic.id);
+        const currentMusicIndex = allMusics.findIndex((music: PrismaType.Music) => music.id === currentMusic?.data?.id);
         if (globalContext?.options.playbackMode === "shuffle") {
-          const newMusic: PrismaType.Music = allMusics.filter((music: PrismaType.Music) => music.id !== currentMusic?.id).sort(() => 0.5 - Math.random())[0];
+          const newMusic: PrismaType.Music = allMusics.filter((music: PrismaType.Music) => music.id !== currentMusic?.data?.id).sort(() => 0.5 - Math.random())[0];
           globalContext.setOptions({ ...globalContext.options, currentMusicId: newMusic.id });
           globalContext.setPlay(true);
           setOption({ ...globalContext.options, currentMusicId: newMusic.id });

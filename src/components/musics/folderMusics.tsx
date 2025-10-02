@@ -8,6 +8,7 @@ import { useSearchStore } from "@/store/store";
 import { useQuery } from "@tanstack/react-query";
 import { folderMusicOption } from "@/utils/options";
 import { useParams } from "next/navigation";
+import SkeletonListComp from "./skeletonList";
 
 function FolderMusicsComp() {
   const globalContext = use(GlobalContext);
@@ -23,8 +24,8 @@ function FolderMusicsComp() {
 
   return (
     <>
-      <div className="hidden lg:flex flex-col gap-2">{isPending ? "loading..." : desktopFilteredMusics.length ? desktopFilteredMusics?.map((music) => <MusicItemComp key={music.id} music={music} />) : <h5 className="text-secondary2 mx-auto mt-16">No music was found</h5>}</div>
-      <div className="flex lg:hidden flex-col gap-2">{isPending ? "loading..." : desktopFilteredMusics.length ? mobileFilteredMusics?.map((music) => <MusicItemComp key={music.id} music={music} />) : <h5 className="text-secondary2 mx-auto mt-16">No music was found</h5>}</div>
+      <div className="hidden lg:flex flex-col gap-2">{isPending ? <SkeletonListComp/> : desktopFilteredMusics.length ? desktopFilteredMusics?.map((music) => <MusicItemComp key={music.id} music={music} />) : <h5 className="text-secondary2 mx-auto mt-16">No music was found</h5>}</div>
+      <div className="flex lg:hidden flex-col gap-2">{isPending ? <SkeletonListComp/> : desktopFilteredMusics.length ? mobileFilteredMusics?.map((music) => <MusicItemComp key={music.id} music={music} />) : <h5 className="text-secondary2 mx-auto mt-16">No music was found</h5>}</div>
     </>
   );
 }
