@@ -4,9 +4,15 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { favoritesMusicsOption } from "@/utils/options";
 import { getQueryClient } from "@/utils/getQueryClient";
 import SkeletonListComp from "@/components/musics/skeletonList";
+import { Metadata } from "next";
 const FavoritesComp = dynamic(() => import("@/components/musics/favorites"), {
-  loading: () => <SkeletonListComp/>,
+  loading: () => <SkeletonListComp />,
 });
+
+export const metadata: Metadata = {
+  title: "Favorites | My musics",
+  description: "Favorites | My musics",
+};
 
 async function page() {
   const cookiesStore = await cookies();

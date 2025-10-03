@@ -1,13 +1,14 @@
 "use client";
 import MusicItemComp from "@/components/musics/musicItem/musicItem";
+import SkeletonListComp from "@/components/musics/skeletonList";
 import SearchBoxComp from "@/components/searchBox/searchBox";
 import { Button } from "@/components/ui/button";
 import GlobalContext from "@/contexts/globalContent";
 import { useGetFavoritesMusics, useGetMusics, useSort } from "@/hooks/useMusic";
 import { PrismaType } from "@/lib/prisma";
 import { useSearchStore } from "@/store/store";
-import { folderMusicOption } from "@/utils/options";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { folderMusicOption, musicsOption } from "@/utils/options";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { useParams, usePathname } from "next/navigation";
 import { use, useCallback, useEffect } from "react";
 
@@ -28,11 +29,9 @@ function MobileSearchSidebarComp({ openSearchSidebar, setOpenSearchSidebar }: { 
   const globalContext = use(GlobalContext);
   const params = useParams();
 
-  // const { data, isPending } = pathname === "/" ? useGetMusics() : pathname === "/favorites" ? useGetFavoritesMusics() : useSuspenseQuery(folderMusicOption(String(globalContext?.token), String(params.slug)));
-
   const musics = useGetMusics();
   const favorites = useGetFavoritesMusics();
-  const folder = useSuspenseQuery(folderMusicOption(String(globalContext?.token), String(params.slug)));
+  const folder = useQuery({ ...folderMusicOption(String(globalContext?.token), String(params?.slug)), enabled: !!params?.slug });
 
   let data, isPending;
 
@@ -64,7 +63,7 @@ function MobileSearchSidebarComp({ openSearchSidebar, setOpenSearchSidebar }: { 
       </header>
       <main className="w-full h-[calc(100%-81px)] flex justify-center p-2.5">
         {isPending ? (
-          "pending"
+          <SkeletonListComp />
         ) : filteredMusics.length ? (
           <div className="w-full flex flex-col gap-2">
             {filteredMusics?.map((music, i) => (

@@ -1,7 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 
-const baseUrl = "https://my-musics-one.vercel.app/api";
-// const baseUrl = "http://localhost:3000/api";
+// const baseUrl = "https://my-musics-one.vercel.app/api";
+const baseUrl = "http://localhost:3000/api";
 
 export const musicsOption = (token: string) => {
   return queryOptions({
@@ -60,5 +60,6 @@ export const folderMusicOption = (token: string, folderId: string) => {
 
       return response.json();
     },
+    enabled: Boolean(folderId),
   });
 };

@@ -31,10 +31,21 @@ function UploaderComp({ open, onClose, defaultValue }: { open: boolean; onClose:
   const updateMutation = useUpdate(defaultValue?.id || "");
 
   function onSubmit(values: z.infer<typeof uploadFormSchema>) {
+    const formData = new FormData();
+    formData.append("musicType", values.musicType);
+    formData.append("musicName", values.musicName);
+    formData.append("singerName", values.singerName);
+
+    if (values.musicType === "link") {
+      formData.append("musicLink", values.musicLink);
+    } else if (values.musicType === "file") {
+      formData.append("musicFile", values.musicFile);
+    }
+
     if (defaultValue) {
       updateMutation.mutate(values);
     } else {
-      createMutation.mutate(values);
+      createMutation.mutate(formData);
     }
   }
 
@@ -51,7 +62,7 @@ function UploaderComp({ open, onClose, defaultValue }: { open: boolean; onClose:
   }, [open, form, defaultValue]);
 
   useEffect(() => {
-    if (createMutation.status === "success" || updateMutation.status === "success") {
+    if (createMutation.status === "success") {
       form.reset();
     }
   }, [createMutation.status, updateMutation.status, form]);

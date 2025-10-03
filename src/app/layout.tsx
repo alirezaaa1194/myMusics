@@ -28,6 +28,7 @@ export default async function RootLayout({
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <meta name="theme-color" content="#16ff6b" />
       </head>
       <body className={`${inter.variable} font-inter bg-main text-white h-dvh lg:!px-8 relative overflow-hidden !max-w-[1440px] !mx-auto`}>
         <Provider user={user} token={token?.value || ""}>
