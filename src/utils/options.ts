@@ -1,7 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 
- const baseUrl="https://mymusics.liara.run/api";
-//const baseUrl = "https://mymusics.vercel.app/api";
+ //const baseUrl="https://mymusics.liara.run/api";
+const baseUrl = "https://mymusics.vercel.app/api";
 // const baseUrl = "http://localhost:3000/api";
 
 export const musicsOption = (token: string) => {
@@ -64,4 +64,5 @@ export const folderMusicOption = (token: string, folderId: string) => {
     enabled: Boolean(folderId),
   });
 };
+
 
