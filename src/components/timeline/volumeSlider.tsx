@@ -1,7 +1,7 @@
 import { Button } from "../ui/button";
 import GlobalContext from "@/contexts/globalContent";
 import { use, useState } from "react";
-import { setOption } from "@/actions/options";
+import { setOption } from "@/utils/saveOptions";
 import { Slider } from "../ui/slider";
 
 function VolumeSliderComp() {

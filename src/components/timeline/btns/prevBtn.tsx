@@ -1,4 +1,4 @@
-import { setOption } from "@/actions/options";
+import { setOption } from "@/utils/saveOptions";
 import { Button } from "@/components/ui/button";
 import GlobalContext from "@/contexts/globalContent";
 import { useCurrentMusic, useGetMusics, useSort } from "@/hooks/useMusic";

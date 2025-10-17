@@ -4,7 +4,7 @@ import { Button } from "../../ui/button";
 import GlobalContext from "@/contexts/globalContent";
 import { useGetMusics, useSort } from "@/hooks/useMusic";
 import { PrismaType } from "@/lib/prisma";
-import { setOption } from "@/actions/options";
+import { setOption } from "@/utils/saveOptions";
 
 const PlaybackBtnComp = ({ className }: { className?: string }) => {
   const globalContext = use(GlobalContext);

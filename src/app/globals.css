@@ -131,3 +131,7 @@ span[role="slider"],
 span[data-slot="slider-track"] {
   @apply bg-accent shadow-accent;
 }
+
+span[data-slot="slider-track"] {
+  @apply bg-accent shadow-accent h-[2px];
+}

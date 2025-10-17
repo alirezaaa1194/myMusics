@@ -7,8 +7,8 @@ import GlobalContext from "@/contexts/globalContent";
 import { useGetFavoritesMusics, useGetMusics, useSort } from "@/hooks/useMusic";
 import { PrismaType } from "@/lib/prisma";
 import { useSearchStore } from "@/store/store";
-import { folderMusicOption, musicsOption } from "@/utils/options";
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { folderMusicOption } from "@/utils/options";
+import { useQuery } from "@tanstack/react-query";
 import { useParams, usePathname } from "next/navigation";
 import { use, useCallback, useEffect } from "react";
 
@@ -52,7 +52,7 @@ function MobileSearchSidebarComp({ openSearchSidebar, setOpenSearchSidebar }: { 
   sortHandler(filteredMusics || []);
 
   return (
-    <div className={`lg:hidden w-full h-[calc(100%-88px)] bg-main fixed z-50 top-0 transition-all ${openSearchSidebar ? "left-0" : "-left-full"}`}>
+    <div className={`lg:hidden w-full h-full bg-main fixed z-50 top-0 transition-all ${openSearchSidebar ? "left-0" : "-left-full"}`}>
       <header className="w-full p-2.5 py-5 flex items-center justify-between gap-2.5 border-b border-b-border">
         <SearchBoxComp />
         <Button className="w-10 h-10 rounded-lg bg-surface hover:bg-surface/80 cursor-pointer" onClick={() => setOpenSearchSidebar(false)}>
@@ -61,11 +61,11 @@ function MobileSearchSidebarComp({ openSearchSidebar, setOpenSearchSidebar }: { 
           </svg>
         </Button>
       </header>
-      <main className="w-full h-[calc(100%-81px)] flex justify-center p-2.5">
+      <main className="w-full h-[calc(100%-170px)] flex justify-center p-2.5">
         {isPending ? (
           <SkeletonListComp />
         ) : filteredMusics.length ? (
-          <div className="w-full flex flex-col gap-2">
+          <div className="no-scrollbar overflow-auto w-full h-full flex flex-col gap-2">
             {filteredMusics?.map((music, i) => (
               <MusicItemComp key={i} music={music} />
             ))}

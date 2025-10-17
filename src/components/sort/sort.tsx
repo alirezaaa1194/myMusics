@@ -3,7 +3,7 @@ import { use } from "react";
 import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import GlobalContext from "@/contexts/globalContent";
-import { setOption } from "@/actions/options";
+import { setOption } from "@/utils/saveOptions";
 
 function SortComp({ className }: { className: string }) {
   const globalContext = use(GlobalContext);

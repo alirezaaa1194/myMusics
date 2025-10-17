@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import GlobalContext from "@/contexts/globalContent";
-import Image from "next/image";
 import { use } from "react";
 import { createHash } from "crypto";
 import { logout } from "@/actions/auth";
@@ -26,7 +25,7 @@ function ProfileDropdown() {
       <DropdownMenuTrigger asChild className="w-2/3 lg:w-full max-w-[300px]">
         <Button className="text-white cursor-pointer outline-0 flex items-center justify-between gap-14 py-5 border border-border">
           <div className="flex items-center gap-2 max-w-2/3 lg:max-w-full">
-            <Image src={`https://gravatar.com/avatar/${hashedEmail}?d=mp`} alt={globalContext?.user?.username || "user profile"} width={28} height={28} className="bg-surface rounded-full object-cover shrink-0" />
+            <img src={`https://gravatar.com/avatar/${hashedEmail}?d=mp`} alt={globalContext?.user?.username || "user profile"} className="bg-surface rounded-full object-cover shrink-0 size-7" />
             <div className="flex flex-col text-left w-full">
               <span className="text-white text-xs font-[500] block w-full line-clamp-1">{globalContext?.user?.username}</span>
               <span className="text-secondary2 text-xs w-full overflow-ellipsis line-clamp-1">{globalContext?.user?.email}</span>

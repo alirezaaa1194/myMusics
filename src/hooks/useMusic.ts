@@ -1,5 +1,5 @@
 "use client";
-import { setOption } from "@/actions/options";
+import { setOption } from "@/utils/saveOptions";
 import GlobalContext from "@/contexts/globalContent";
 import { PrismaType } from "@/lib/prisma";
 import { uploadFormSchema } from "@/utils/formSchema";
@@ -284,9 +284,9 @@ export function useUpdate(id: string) {
             music.id === id
               ? {
                   ...music,
-                  title: updatedMusic.get('musicName'),
-                  src: updatedMusic.get('musicType') === "link" ? updatedMusic.get('musicLink') : updatedMusic.get('musicFile'),
-                  singerName: updatedMusic.get('singerName'),
+                  title: updatedMusic.get("musicName"),
+                  src: updatedMusic.get("musicType") === "link" ? updatedMusic.get("musicLink") : updatedMusic.get("musicFile"),
+                  singerName: updatedMusic.get("singerName"),
                 }
               : music
           ),

@@ -24,7 +24,6 @@ function TimelineComp() {
     return () => {
       globalContext?.audio.current?.removeEventListener("timeupdate", setTime);
     };
-    // }, []);
   }, [currentMusic, globalContext?.audio]);
 
   return (

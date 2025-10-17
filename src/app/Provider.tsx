@@ -13,7 +13,7 @@ const queryClient = getQueryClient();
 function Provider({ user, token, children }: { user: PrismaType.User | null; token: string; children: React.ReactNode }) {
   const defaultOption: optionsType = {
     currentMusicId: undefined,
-    volume: 50,
+    volume: 100,
     filter: "name",
     sort: "Ascending",
     playbackMode: "next",
@@ -24,7 +24,7 @@ function Provider({ user, token, children }: { user: PrismaType.User | null; tok
   const [options, setOptions] = useState<optionsType>(() => {
     if (typeof window !== "undefined") {
       const local = localStorage.getItem("options");
-
+      
       if (local) {
         const localOptions = JSON.parse(local);
         return localOptions;
