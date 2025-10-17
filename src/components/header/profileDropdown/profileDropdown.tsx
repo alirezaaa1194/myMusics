@@ -6,11 +6,18 @@ import Image from "next/image";
 import { use } from "react";
 import { createHash } from "crypto";
 import { logout } from "@/actions/auth";
+import { useQueryClient } from "@tanstack/react-query";
 
 function ProfileDropdown() {
   const globalContext = use(GlobalContext);
+  const queryClient = useQueryClient();
   const signOutHandler = () => {
     logout();
+    if (globalContext?.audio.current) {
+      globalContext.audio.current.currentTime = 0;
+      globalContext.audio.current.pause();
+      queryClient.clear();
+    }
   };
   const hashedEmail = createHash("sha256").update(`${globalContext?.user?.email}`).digest("hex");
 

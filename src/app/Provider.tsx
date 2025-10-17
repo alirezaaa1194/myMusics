@@ -56,7 +56,7 @@ function Provider({ user, token, children }: { user: PrismaType.User | null; tok
           token,
         }}
       >
-        <Toaster position="top-right" richColors />
+        <Toaster position="top-right" richColors className="dark" />
         <audio
           ref={audioRef}
           onError={() => {

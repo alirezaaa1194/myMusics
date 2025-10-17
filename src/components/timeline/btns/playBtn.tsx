@@ -11,15 +11,15 @@ function PlayBtnComp({ className }: { className?: string }) {
   //   globalContext?.setPlay(false);
   // }, [pathname]);
 
-  const playHandler = () => {
-    globalContext?.setPlay(true);
-  };
-  const pauseHandler = () => {
-    globalContext?.setPlay(false);
-  };
+  // const playHandler = () => {
+  //   globalContext?.setPlay(true);
+  // };
+  // const pauseHandler = () => {
+  //   globalContext?.setPlay(false);
+  // };
 
-  audio?.addEventListener("play", playHandler);
-  audio?.addEventListener("pause", pauseHandler);
+  // audio?.addEventListener("play", playHandler);
+  // audio?.addEventListener("pause", pauseHandler);
 
   return (
     <Button

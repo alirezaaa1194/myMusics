@@ -199,10 +199,8 @@ export function useCreate() {
       return fetch("/api/music", {
         method: "POST",
         headers: {
-          // "Content-Type": "application/json",
           authorization: String(globalContext?.token),
         },
-        // body: JSON.stringify({ ...newMusic, folderId: params?.slug || null }),
         body: newMusic,
       });
     },
@@ -255,18 +253,17 @@ export function useUpdate(id: string) {
   const queryClient = useQueryClient();
 
   const updateMutation = useMutation({
-    mutationFn: (updatedMusic: z.infer<typeof uploadFormSchema>) => {
+    mutationFn: (updatedMusic: FormData) => {
       return fetch(`/api/music/${id}`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
           authorization: String(globalContext?.token),
         },
-        body: JSON.stringify(updatedMusic),
+        body: updatedMusic,
       });
     },
 
-    onMutate: async (updatedMusic: z.infer<typeof uploadFormSchema>) => {
+    onMutate: async (updatedMusic: FormData) => {
       await queryClient.cancelQueries({ queryKey: ["musics"] });
       await queryClient.cancelQueries({ queryKey: ["favorites"] });
       await queryClient.cancelQueries({
@@ -287,9 +284,9 @@ export function useUpdate(id: string) {
             music.id === id
               ? {
                   ...music,
-                  title: updatedMusic.musicName,
-                  src: updatedMusic.musicType === "link" ? updatedMusic.musicLink : updatedMusic.musicFile,
-                  singerName: updatedMusic.singerName,
+                  title: updatedMusic.get('musicName'),
+                  src: updatedMusic.get('musicType') === "link" ? updatedMusic.get('musicLink') : updatedMusic.get('musicFile'),
+                  singerName: updatedMusic.get('singerName'),
                 }
               : music
           ),

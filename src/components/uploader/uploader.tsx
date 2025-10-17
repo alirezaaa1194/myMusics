@@ -43,7 +43,7 @@ function UploaderComp({ open, onClose, defaultValue }: { open: boolean; onClose:
     }
 
     if (defaultValue) {
-      updateMutation.mutate(values);
+      updateMutation.mutate(formData);
     } else {
       createMutation.mutate(formData);
     }
