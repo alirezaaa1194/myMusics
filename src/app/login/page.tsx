@@ -1,4 +1,10 @@
 import LoginComp from "@/components/login/login";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Login | My musics",
+  description: "Login | My musics",
+};
 
 function page() {
   return (
